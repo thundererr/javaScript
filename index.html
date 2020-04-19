@@ -4,7 +4,15 @@
 	<title>JavaScript</title>
 </head>
 <body>
-	
+	<label for="dropDown1"> Clock 1 Time Zone</label>
+	<select id = "timeZone1">
+		
+	</select>
+<br>
+	<label for="dropDown1"> Clock 2 Time Zone</label>
+	<select id = "timeZone2">
+		
+	</select>
 	<svg width = "500" height = "500" version="1.1" xmlnx="http://www.w3.org/2000/svg">
 	<g id = "clock1">
 			<linearGradient id="cir1">
@@ -178,9 +186,12 @@
 
 	function runClock(){
 		var date = new Date();
-		let hr = date.getHours();
-		let min = date.getMinutes();
-		let sec = date.getSeconds();
+		let dropDown1Event = document.body.querySelector("#timeZone1").value;
+		console.log("Clock 1 : " +dropDown1Event);
+		date = moment(date.getTime()).tz(dropDown1Event);
+		let hr = date.hours();
+		let min = date.minutes();
+		let sec = date.seconds();
 
 		//console.log("hour :" + hr + " minute :" + min + " second :" + sec);
 		let secpos = sec *360 /60;
@@ -193,16 +204,21 @@
 		secondHand.style.transform="rotate("+secpos+"deg)";
 	}
 
+
 	var interval = setInterval(runClock, 1000);
+
+	
 
 	function runSmallClock(){
 		let dateLocal = new Date();
-		date = moment(dateLocal.getTime()).tz("Europe/London");
+		let dropDown2Event = document.body.querySelector("#timeZone2").value;
+		console.log("clock 2 : " + dropDown2Event);
+		date = moment(dateLocal.getTime()).tz(dropDown2Event);
 		let hr = date.hours();
 		let min = date.minutes();
 		let sec = date.seconds();
 
-		console.log("hour :" + hr + " minute :" + min + " second :" + sec);
+		//console.log("hour :" + hr + " minute :" + min + " second :" + sec);
 		let secpos = sec *360 /60;
 		let minpos = (min * 360 /60) + (secpos/60) ;
 		let hrpos = (hr *360 /12) + (minpos/12);
@@ -212,7 +228,9 @@
 		minuteHand2.style.transform="rotate("+minpos+"deg)";
 		secondHand2.style.transform="rotate("+secpos+"deg)";
 	}
+	
 	var interval2 = setInterval(runSmallClock, 1000);
+	
 	/*const d1 = new Date();
 	console.log(d1);
 	console.log(d1.toUTCString());
@@ -225,8 +243,32 @@
 	console.log(a.hours());
 	console.log(a.minutes());
 	console.log(a.seconds());
+	*/
+	function dropDown(country){
+		let option = document.createElement("option");
+		option.value = country;
+		let textField = document.createTextNode(country);
+		option.appendChild(textField);
+		let parent = document.body.querySelector("#timeZone1");
+		parent.appendChild(option);
+	}
+	moment.tz.names().forEach(dropDown);
 
+	function dropDown2(country){
+		let option = document.createElement("option");
+		option.value = country;
+		let textField = document.createTextNode(country);
+		option.appendChild(textField);
+		let parent = document.body.querySelector("#timeZone2");
+		parent.appendChild(option);
+	}
+	moment.tz.names().forEach(dropDown2);
 
-	console.log(moment.tz.names());*/
+	/*let dropDown1Event = document.body.querySelector("#timeZone1");
+	dropDown1Event.addEventListener(onchange, f1(dropDown1Event.value));
+
+	let dropDown2Event = document.body.querySelector("#timeZone2");
+	dropDown2Event.addEventListener(onchange, f2(dropDown2Event.value));*/
+	//console.log(moment.tz.names()[2]);
 </script>
 </html>
