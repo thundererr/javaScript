@@ -2,7 +2,6 @@
 <html>
 <head>
 	<title>JavaScript</title>
-	<script src = "closure.js" defer></script>
 </head>
 <body>
 	
@@ -30,8 +29,8 @@
 		<circle r="215" cx="250" cy="250" fill="rgb(245, 245, 245)" stroke="not" stroke-width="not"/>
 		<!-- Small Clock !-->
 		<g id = "clock2">
-			<circle r="75" cx="175" cy="175" fill="rgb(22, 23, 22)" stroke="black" stroke-width="not"/>
-			<circle r="71" cx="175" cy="175" fill="rgb(245, 245, 245)" stroke="not" stroke-width="not"/>
+			<circle r="75" cx="175" cy="175" fill="rgb(22, 23, 22)" stroke="black" stroke-width="not" fill-opacity ="0.7"/>
+			<circle r="72" cx="175" cy="175" fill="rgb(245, 245, 245)" stroke="not" stroke-width="not" />
 			<!-- second marks -->
 		<g id = "baseC2">
 			<rect x="175" y="102" width="0.21" height="10" fill="black" stroke="black" stroke-width="not"/>
@@ -166,5 +165,68 @@
 </body>
 
 <link rel="stylesheet" type="text/css" href="CSSFile/handStyle.css">
-<script type="text/javascript" src="JSFile/handMovement.js"></script>
+<script type="text/javascript" src = "TimeZone/moment.js"></script>
+<script type="text/javascript" src ="TimeZone/moment-timezone-with-data.js"></script>
+<script type="text/javascript">
+	const hourHand = document.body.querySelector("#hour");
+	const minuteHand = document.body.querySelector("#minute");
+	const secondHand = document.body.querySelector("#second");
+
+	const hourHand2 = document.body.querySelector("#hour2");
+	const minuteHand2 = document.body.querySelector("#minute2");
+	const secondHand2 = document.body.querySelector("#second2");
+
+	function runClock(){
+		var date = new Date();
+		let hr = date.getHours();
+		let min = date.getMinutes();
+		let sec = date.getSeconds();
+
+		//console.log("hour :" + hr + " minute :" + min + " second :" + sec);
+		let secpos = sec *360 /60;
+		let minpos = (min * 360 /60) + (secpos/60) ;
+		let hrpos = (hr *360 /12) + (minpos/12);
+
+
+		hourHand.style.transform="rotate(" +hrpos +"deg)";
+		minuteHand.style.transform="rotate("+minpos+"deg)";
+		secondHand.style.transform="rotate("+secpos+"deg)";
+	}
+
+	var interval = setInterval(runClock, 1000);
+
+	function runSmallClock(){
+		let dateLocal = new Date();
+		date = moment(dateLocal.getTime()).tz("Europe/London");
+		let hr = date.hours();
+		let min = date.minutes();
+		let sec = date.seconds();
+
+		console.log("hour :" + hr + " minute :" + min + " second :" + sec);
+		let secpos = sec *360 /60;
+		let minpos = (min * 360 /60) + (secpos/60) ;
+		let hrpos = (hr *360 /12) + (minpos/12);
+
+
+		hourHand2.style.transform="rotate(" +hrpos +"deg)";
+		minuteHand2.style.transform="rotate("+minpos+"deg)";
+		secondHand2.style.transform="rotate("+secpos+"deg)";
+	}
+	var interval2 = setInterval(runSmallClock, 1000);
+	/*const d1 = new Date();
+	console.log(d1);
+	console.log(d1.toUTCString());
+	console.log(d1.getTimezoneOffset());
+
+	var a = moment(d1.getTime()).tz("Europe/London");
+
+	console.log(a.format()); // 2013-11-18T11:55:00+08:00
+	console.log("parsing");
+	console.log(a.hours());
+	console.log(a.minutes());
+	console.log(a.seconds());
+
+
+	console.log(moment.tz.names());*/
+</script>
 </html>
